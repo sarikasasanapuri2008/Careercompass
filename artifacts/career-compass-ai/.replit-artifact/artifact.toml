@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "CareerCompass AI"
+description = "A career and exam eligibility companion that helps candidates compare their profile with government exams and private roles, understand rule-based eligibility, and get grounded AI guidance."
+version = "1.0.0"
+id = "artifacts/career-compass-ai"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23708
+
+[services.development]
+run = "pnpm --filter @workspace/career-compass-ai run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/career-compass-ai", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/career-compass-ai/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23708"
+BASE_PATH = "/"

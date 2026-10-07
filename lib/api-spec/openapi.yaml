@@ -10,6 +10,14 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: opportunities
+    description: Career and government exam opportunities
+  - name: profiles
+    description: Candidate profiles
+  - name: eligibility
+    description: Deterministic eligibility checks
+  - name: ai
+    description: Profile matching and grounded career guidance
 paths:
   /healthz:
     get:
@@ -24,6 +32,119 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /opportunities:
+    get:
+      operationId: listOpportunities
+      tags: [opportunities]
+      summary: List seeded opportunities
+      responses:
+        "200":
+          description: The available opportunities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Opportunity"
+  /profiles/{profileId}:
+    get:
+      operationId: getProfile
+      tags: [profiles]
+      summary: Retrieve a saved candidate profile
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: The saved profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "404":
+          description: Profile not found
+    put:
+      operationId: saveProfile
+      tags: [profiles]
+      summary: Create or update a candidate profile
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileInput"
+      responses:
+        "200":
+          description: The saved profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+  /eligibility/check:
+    post:
+      operationId: checkEligibility
+      tags: [eligibility]
+      summary: Check a candidate against an opportunity's deterministic rules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EligibilityInput"
+      responses:
+        "200":
+          description: Eligibility result and concise reasons
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EligibilityResult"
+  /ai/match:
+    post:
+      operationId: getAiMatch
+      tags: [ai]
+      summary: Generate a profile match summary and skill gaps
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatchInput"
+      responses:
+        "200":
+          description: AI match analysis
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiMatchResponse"
+  /ai/chat:
+    post:
+      operationId: sendAiChat
+      tags: [ai]
+      summary: Get brief career advice grounded in the profile and opportunity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatInput"
+      responses:
+        "200":
+          description: Grounded career guidance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiChatResponse"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +154,209 @@ components:
           type: string
       required:
         - status
+    Opportunity:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        domain:
+          type: string
+          enum: [GOVERNMENT, PRIVATE]
+        minAge:
+          type: integer
+        maxAge:
+          type: [integer, "null"]
+        minDegree:
+          type: string
+        allowedBranches:
+          type: array
+          items:
+            type: string
+        requiredSkills:
+          type: array
+          items:
+            type: string
+        officialUrl:
+          type: string
+          format: uri
+        lastUpdated:
+          type: string
+          format: date
+      required:
+        - id
+        - title
+        - domain
+        - minAge
+        - maxAge
+        - minDegree
+        - allowedBranches
+        - requiredSkills
+        - officialUrl
+        - lastUpdated
+    UserProfile:
+      type: object
+      properties:
+        profileId:
+          type: string
+          format: uuid
+        age:
+          type: integer
+        category:
+          type: string
+          enum: [GENERAL, OBC, SC, ST, EWS, OTHER]
+        degree:
+          type: string
+          enum: [SECONDARY, DIPLOMA, BACHELOR, MASTER, DOCTORATE]
+        branch:
+          type: string
+        skills:
+          type: array
+          items:
+            type: string
+        dailyHours:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - profileId
+        - age
+        - category
+        - degree
+        - branch
+        - skills
+        - dailyHours
+        - updatedAt
+    ProfileInput:
+      type: object
+      properties:
+        age:
+          type: integer
+          minimum: 16
+          maximum: 100
+        category:
+          type: string
+          enum: [GENERAL, OBC, SC, ST, EWS, OTHER]
+        degree:
+          type: string
+          enum: [SECONDARY, DIPLOMA, BACHELOR, MASTER, DOCTORATE]
+        branch:
+          type: string
+          minLength: 1
+        skills:
+          type: array
+          items:
+            type: string
+        dailyHours:
+          type: integer
+          minimum: 0
+          maximum: 24
+      required:
+        - age
+        - category
+        - degree
+        - branch
+        - skills
+        - dailyHours
+    EligibilityInput:
+      type: object
+      properties:
+        profileId:
+          type: string
+          format: uuid
+        opportunityId:
+          type: string
+      required:
+        - profileId
+        - opportunityId
+    EligibilityResult:
+      type: object
+      properties:
+        profileId:
+          type: string
+          format: uuid
+        opportunityId:
+          type: string
+        status:
+          type: string
+          enum: [ELIGIBLE, POSSIBLY_ELIGIBLE, NOT_ELIGIBLE]
+        reasons:
+          type: array
+          items:
+            type: string
+      required:
+        - profileId
+        - opportunityId
+        - status
+        - reasons
+    MatchInput:
+      type: object
+      properties:
+        profileId:
+          type: string
+          format: uuid
+        opportunityId:
+          type: string
+      required:
+        - profileId
+        - opportunityId
+    AiMatchResponse:
+      type: object
+      properties:
+        matchPercentage:
+          type: integer
+          minimum: 0
+          maximum: 100
+        summary:
+          type: string
+        top3Gaps:
+          type: array
+          items:
+            type: string
+          maxItems: 3
+      required:
+        - matchPercentage
+        - summary
+        - top3Gaps
+    ChatTurn:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+      required:
+        - role
+        - content
+    ChatInput:
+      type: object
+      properties:
+        profileId:
+          type: string
+          format: uuid
+        opportunityId:
+          type: string
+        message:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        history:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChatTurn"
+          maxItems: 12
+      required:
+        - profileId
+        - opportunityId
+        - message
+    AiChatResponse:
+      type: object
+      properties:
+        reply:
+          type: string
+      required:
+        - reply
 

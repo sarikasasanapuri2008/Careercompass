@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --background: 42 33% 96%;
+  --foreground: 167 29% 16%;
+  --border: 39 20% 85%;
+  --input: 39 20% 85%;
+  --card: 42 38% 99%;
+  --card-foreground: 167 29% 16%;
+  --primary: 166 36% 27%;
+  --primary-foreground: 42 33% 96%;
+  --secondary: 38 44% 88%;
+  --secondary-foreground: 167 29% 16%;
+  --muted: 40 23% 91%;
+  --muted-foreground: 166 10% 43%;
+  --accent: 36 83% 58%;
+  --accent-foreground: 167 29% 16%;
+  --destructive: 4 57% 48%;
+  --destructive-foreground: 42 33% 96%;
+  --ring: 166 36% 27%;
+  --radius: 0.8rem;
+  --app-font-sans: 'DM Sans', sans-serif;
+  --app-font-display: 'Manrope', sans-serif;
+  --app-font-mono: 'DM Mono', monospace;
+  --shadow-soft: 0 14px 42px rgba(37, 63, 55, 0.07);
+}
+
+.dark {
+  --background: 167 25% 10%;
+  --foreground: 42 33% 93%;
+  --border: 164 12% 25%;
+  --input: 164 12% 25%;
+  --card: 166 21% 14%;
+  --card-foreground: 42 33% 93%;
+  --primary: 39 79% 62%;
+  --primary-foreground: 167 29% 16%;
+  --secondary: 165 17% 21%;
+  --secondary-foreground: 42 33% 93%;
+  --muted: 165 17% 21%;
+  --muted-foreground: 160 9% 65%;
+  --accent: 39 79% 62%;
+  --accent-foreground: 167 29% 16%;
+  --destructive: 4 57% 55%;
+  --destructive-foreground: 42 33% 96%;
+  --ring: 39 79% 62%;
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--app-font-sans);
+    min-width: 320px;
+  }
+  button, input, select, textarea { font: inherit; }
+  button { cursor: pointer; }
+  ::selection { background: hsl(var(--accent) / .35); }
+}
+
+.display { font-family: var(--app-font-display); }
+.mono { font-family: var(--app-font-mono); }
+.surface { background: hsl(var(--card)); box-shadow: var(--shadow-soft); }
+.quiet-grid {
+  background-image: linear-gradient(hsl(var(--primary) / .035) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary) / .035) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.fade-up { animation: fadeUp .42s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
