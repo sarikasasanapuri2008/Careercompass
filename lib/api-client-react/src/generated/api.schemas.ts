@@ -52,6 +52,7 @@ export const UserProfileDegree = {
   BACHELOR: 'BACHELOR',
   MASTER: 'MASTER',
   DOCTORATE: 'DOCTORATE',
+  OTHER: 'OTHER',
 } as const;
 
 export interface UserProfile {
@@ -86,6 +87,7 @@ export const ProfileInputDegree = {
   BACHELOR: 'BACHELOR',
   MASTER: 'MASTER',
   DOCTORATE: 'DOCTORATE',
+  OTHER: 'OTHER',
 } as const;
 
 export interface ProfileInput {

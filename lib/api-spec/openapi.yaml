@@ -60,13 +60,13 @@ paths:
             format: uuid
       responses:
         "200":
-          description: The saved profile
+          description: The saved profile, or null when no profile has been saved yet
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserProfile"
-        "404":
-          description: Profile not found
+                anyOf:
+                  - $ref: "#/components/schemas/UserProfile"
+                  - type: "null"
     put:
       operationId: saveProfile
       tags: [profiles]
@@ -208,7 +208,7 @@ components:
           enum: [GENERAL, OBC, SC, ST, EWS, OTHER]
         degree:
           type: string
-          enum: [SECONDARY, DIPLOMA, BACHELOR, MASTER, DOCTORATE]
+          enum: [SECONDARY, DIPLOMA, BACHELOR, MASTER, DOCTORATE, OTHER]
         branch:
           type: string
         skills:
@@ -241,7 +241,7 @@ components:
           enum: [GENERAL, OBC, SC, ST, EWS, OTHER]
         degree:
           type: string
-          enum: [SECONDARY, DIPLOMA, BACHELOR, MASTER, DOCTORATE]
+          enum: [SECONDARY, DIPLOMA, BACHELOR, MASTER, DOCTORATE, OTHER]
         branch:
           type: string
           minLength: 1

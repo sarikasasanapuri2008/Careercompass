@@ -225,9 +225,9 @@ export const getGetProfileUrl = (profileId: string,) => {
 /**
  * @summary Retrieve a saved candidate profile
  */
-export const getProfile = async (profileId: string, options?: Parameters<typeof customFetch>[1]): Promise<UserProfile> => {
+export const getProfile = async (profileId: string, options?: Parameters<typeof customFetch>[1]): Promise<UserProfile | null> => {
 
-  return customFetch<UserProfile>(getGetProfileUrl(profileId),
+  return customFetch<UserProfile | null>(getGetProfileUrl(profileId),
   {
     ...options,
     method: 'GET'
@@ -247,7 +247,7 @@ export const getGetProfileQueryKey = (profileId: string,) => {
     }
 
 
-export const getGetProfileQueryOptions = <TData = Awaited<ReturnType<typeof getProfile>>, TError = ErrorType<void>>(profileId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProfile>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetProfileQueryOptions = <TData = Awaited<ReturnType<typeof getProfile>>, TError = ErrorType<unknown>>(profileId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProfile>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -266,14 +266,14 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type GetProfileQueryResult = NonNullable<Awaited<ReturnType<typeof getProfile>>>
-export type GetProfileQueryError = ErrorType<void>
+export type GetProfileQueryError = ErrorType<unknown>
 
 
 /**
  * @summary Retrieve a saved candidate profile
  */
 
-export function useGetProfile<TData = Awaited<ReturnType<typeof getProfile>>, TError = ErrorType<void>>(
+export function useGetProfile<TData = Awaited<ReturnType<typeof getProfile>>, TError = ErrorType<unknown>>(
  profileId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProfile>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {

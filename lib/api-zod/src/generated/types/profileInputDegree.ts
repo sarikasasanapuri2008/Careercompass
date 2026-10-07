@@ -15,4 +15,5 @@ export const ProfileInputDegree = {
   BACHELOR: 'BACHELOR',
   MASTER: 'MASTER',
   DOCTORATE: 'DOCTORATE',
+  OTHER: 'OTHER',
 } as const;

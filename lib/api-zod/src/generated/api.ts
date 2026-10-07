@@ -42,16 +42,16 @@ export const GetProfileParams = zod.object({
   "profileId": zod.coerce.string().uuid()
 })
 
-export const GetProfileResponse = zod.object({
+export const GetProfileResponse = zod.union([zod.object({
   "profileId": zod.string().uuid(),
   "age": zod.number().int(),
   "category": zod.enum(['GENERAL', 'OBC', 'SC', 'ST', 'EWS', 'OTHER']),
-  "degree": zod.enum(['SECONDARY', 'DIPLOMA', 'BACHELOR', 'MASTER', 'DOCTORATE']),
+  "degree": zod.enum(['SECONDARY', 'DIPLOMA', 'BACHELOR', 'MASTER', 'DOCTORATE', 'OTHER']),
   "branch": zod.string(),
   "skills": zod.array(zod.string()),
   "dailyHours": zod.number().int(),
   "updatedAt": zod.coerce.date()
-})
+}),zod.null()])
 
 
 /**
@@ -73,7 +73,7 @@ export const saveProfileBodyDailyHoursMax = 24;
 export const SaveProfileBody = zod.object({
   "age": zod.number().int().min(saveProfileBodyAgeMin).max(saveProfileBodyAgeMax),
   "category": zod.enum(['GENERAL', 'OBC', 'SC', 'ST', 'EWS', 'OTHER']),
-  "degree": zod.enum(['SECONDARY', 'DIPLOMA', 'BACHELOR', 'MASTER', 'DOCTORATE']),
+  "degree": zod.enum(['SECONDARY', 'DIPLOMA', 'BACHELOR', 'MASTER', 'DOCTORATE', 'OTHER']),
   "branch": zod.string().min(1),
   "skills": zod.array(zod.string()),
   "dailyHours": zod.number().int().min(saveProfileBodyDailyHoursMin).max(saveProfileBodyDailyHoursMax)
@@ -83,7 +83,7 @@ export const SaveProfileResponse = zod.object({
   "profileId": zod.string().uuid(),
   "age": zod.number().int(),
   "category": zod.enum(['GENERAL', 'OBC', 'SC', 'ST', 'EWS', 'OTHER']),
-  "degree": zod.enum(['SECONDARY', 'DIPLOMA', 'BACHELOR', 'MASTER', 'DOCTORATE']),
+  "degree": zod.enum(['SECONDARY', 'DIPLOMA', 'BACHELOR', 'MASTER', 'DOCTORATE', 'OTHER']),
   "branch": zod.string(),
   "skills": zod.array(zod.string()),
   "dailyHours": zod.number().int(),

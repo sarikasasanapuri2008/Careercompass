@@ -184,18 +184,18 @@ function AppContent() {
             <h1 className="display max-w-[220px] text-[26px] font-semibold leading-[1.12] tracking-[-.05em] sm:text-[29px]">A good plan starts with <span className="text-primary">what’s true.</span></h1>
             <p className="mt-3 max-w-[235px] text-[13px] leading-5 text-muted-foreground">Know where you stand. See what to work on next.</p>
           </div>
-          <nav aria-label="Workspace sections" className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:gap-1 lg:overflow-visible">
+          <nav aria-label="Workspace sections" className="grid grid-cols-3 gap-2 pb-1 lg:flex lg:flex-col lg:gap-1">
             {tabs.map(({ id, label, icon: Icon, count }) => (
               <button
                 key={id}
                 type="button"
                 onClick={() => setView(id)}
-                className={`flex shrink-0 items-center gap-3 rounded-xl px-3 py-3 text-left text-[13px] transition-all ${view === id ? 'bg-primary text-primary-foreground shadow-[0_8px_18px_rgba(40,86,74,.15)]' : 'text-muted-foreground hover:bg-[#eae9de] hover:text-foreground'}`}
+                className={`flex min-w-0 flex-col items-center gap-1.5 rounded-xl px-2 py-2.5 text-center text-[11px] leading-tight transition-all sm:flex-row sm:gap-3 sm:px-3 sm:py-3 sm:text-left sm:text-[13px] lg:items-center ${view === id ? 'bg-primary text-primary-foreground shadow-[0_8px_18px_rgba(40,86,74,.15)]' : 'text-muted-foreground hover:bg-[#eae9de] hover:text-foreground'}`}
                 aria-current={view === id ? 'page' : undefined}
                 data-testid={`nav-${id}`}
               >
                 <Icon size={17} strokeWidth={1.8} />
-                <span className="flex-1 whitespace-nowrap font-medium">{label}</span>
+                <span className="flex-1 whitespace-normal font-medium sm:whitespace-nowrap">{label}</span>
                 {count && <span className={`mono text-[10px] ${view === id ? 'text-primary-foreground/65' : 'text-muted-foreground/70'}`}>{count}</span>}
               </button>
             ))}
@@ -253,7 +253,7 @@ function AppContent() {
                   </Field>
                   <Field label="Highest qualification">
                     <div className="select-wrap"><select value={draft.degree} onChange={(event) => updateDraft('degree', event.target.value as ProfileInput['degree'])} className="field-input appearance-none" data-testid="select-degree">
-                      <option value="SECONDARY">Secondary</option><option value="DIPLOMA">Diploma</option><option value="BACHELOR">Bachelor’s</option><option value="MASTER">Master’s</option><option value="DOCTORATE">Doctorate</option>
+                       <option value="SECONDARY">Secondary</option><option value="DIPLOMA">Diploma</option><option value="BACHELOR">Bachelor’s</option><option value="MASTER">Master’s</option><option value="DOCTORATE">Doctorate</option><option value="OTHER">Other / equivalent</option>
                     </select><ChevronDown size={15} /></div>
                   </Field>
                   <Field label="Degree branch" note="For example, Commerce or Mechanical">
@@ -395,7 +395,7 @@ function AppContent() {
                 </div>
                 <div className="rounded-[20px] border border-[#dedbce] bg-[#f0eee5] p-5">
                   <div className="flex items-center gap-2 text-primary"><BookOpen size={15} /><p className="display text-[13px] font-semibold">Grounded, not guaranteed</p></div>
-                  <p className="mt-2 text-[12px] leading-[1.65] text-muted-foreground">Assistant replies are based on your profile and selected opportunity. They aren’t official eligibility decisions or a substitute for the latest notification.</p>
+                  <p className="mt-2 text-[12px] leading-[1.65] text-muted-foreground">Each reply sends your profile, selected opportunity, and message to Google Gemini. Don’t include sensitive information. Advice is not an official eligibility decision; verify the latest notice.</p>
                 </div>
               </div>
             </div>

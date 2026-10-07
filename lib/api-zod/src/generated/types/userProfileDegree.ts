@@ -15,4 +15,5 @@ export const UserProfileDegree = {
   BACHELOR: 'BACHELOR',
   MASTER: 'MASTER',
   DOCTORATE: 'DOCTORATE',
+  OTHER: 'OTHER',
 } as const;
