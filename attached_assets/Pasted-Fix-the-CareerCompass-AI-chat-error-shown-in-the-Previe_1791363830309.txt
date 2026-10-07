@@ -1,0 +1,47 @@
+Fix the CareerCompass AI chat error shown in the Preview: when I click Send after entering a question such as "What can I work on with my available time?", the UI shows "Your message could not be sent. Please try again."
+
+IMPORTANT:
+
+* I have very limited Replit Agent credits, so diagnose and fix this in ONE task.
+* Do NOT rebuild or redesign the application.
+* Do NOT remove existing CareerCompass AI features.
+* Do NOT create unnecessary files or dependencies.
+* Preserve the current UI and styling.
+* Do NOT make speculative changes.
+
+First inspect the existing codebase and determine the exact reason the chat message fails.
+
+Check:
+
+1. The frontend chat/send-message handler.
+2. The API/backend route used to send the message.
+3. Request method, URL, request body and response handling.
+4. Server/runtime logs for the actual error.
+5. Environment variables/secrets required by the AI service.
+6. Whether the selected AI integration/API is correctly configured.
+7. CORS or frontend/backend URL issues if applicable.
+8. Any TypeScript/runtime errors related to the chat request.
+
+Then implement the SMALLEST reliable fix.
+
+The chat must successfully accept a user message and return an AI response.
+
+If an external AI API is currently configured but its key/secret is missing or invalid:
+
+* Do not expose or hard-code any API key.
+* Use the existing Replit secret/environment-variable setup.
+* If the app already has a Replit-managed AI integration, use the existing integration instead of adding another provider.
+* Make the application fail gracefully with a useful message if the AI service is unavailable.
+
+After making the fix:
+
+1. Run the application.
+2. Test the chat flow using:
+   "What can I work on with my available time?"
+3. Verify that the request reaches the backend and an AI response is returned.
+4. Check the browser/server logs for errors.
+5. Fix any remaining error you discover.
+6. Do not stop at saying what the problem is — actually implement and test the fix.
+
+Do not change the application's overall design, career data, navigation, or other working features.
+Only finish when the chat Send button works successfully in Preview.

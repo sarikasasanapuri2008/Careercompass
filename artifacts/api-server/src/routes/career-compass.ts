@@ -183,7 +183,7 @@ router.post("/ai/match", async (req, res): Promise<void> => {
 
   try {
     const response = await getGemini().models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.8-flash",
       contents: [
         {
           role: "user",
@@ -251,7 +251,7 @@ router.post("/ai/chat", async (req, res): Promise<void> => {
 
   try {
     const response = await getGemini().models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.8-flash",
       contents: [
         ...(body.data.history ?? []).slice(-6).map((turn) => ({
           role: turn.role === "assistant" ? ("model" as const) : ("user" as const),
